@@ -5,7 +5,7 @@ let eatedFood = false; // snake eated food, we want to use it at next move, to a
 let currentDirection;
 let mainInterval;
 let currentMove = moveDown; // initial function to move snake
-let snakeInterval = 130; // interval to move snake
+let snakeInterval = 110; // interval to move snake
 let actualSnake = [];
 let matrixDOM = [];
 createMatrix(); // creating DOM matrix
@@ -85,6 +85,7 @@ function printSnake() {
 }
 
 function moveDown() {
+  // console.time("sn");
   currentDirection = "down"; // setting current direction
   clear();
   // handle that moment when the snake is touched a bottom edge of the field
@@ -111,34 +112,19 @@ function moveDown() {
     moveSnake(nextCell);
   }
   printSnake();
+  // console.timeEnd("sn");
 }
 
 function moveSnake(nextCell) {
   if (nextCell.classList[1] === "food_cell") {
-    // console.log(nextCell);
-    console.log(actualSnake.length);
+    // console.log(actualSnake.length);
     eatedFood = true;
     actualSnake.push(nextCell);
     actualSnake.shift();
-    // actualSnake.push(nextCell); // pushing next element of the snake actual position
 
-    // console.log(currentFoodPosition.classList);
-    // currentFoodPosition.className += "snake_block_wapper ";
     currentFoodPosition.classList.remove("food_cell");
 
     currentFoodPosition = getFoodposition();
-
-    // function checkFoodPosition() {
-    //   actualSnake.forEach((el) => {
-    //     if (el === currentFoodPosition) {
-    //       console.log("true");
-    //       currentFoodPosition = getFoodposition();
-    //       checkFoodPosition();
-    //     }
-    //   });
-    // }
-
-    // actualSnake.shift();
   } else {
     actualSnake.push(nextCell);
     actualSnake.shift(); // removing last bite(element) of the snake
@@ -225,25 +211,6 @@ function moveUp() {
   } else {
     moveSnake(nextCell);
   }
-
-  // if (position[0] === 0) {
-  //   // handle that moment when the snake is touched an up edge of the field
-  //   actualSnake.push(matrixDOM[matrixDOM[0].length - 1][position[1]]);
-  //   actualSnake.shift(); // removing last bite(element) of the snake
-  // } else {
-  //   let nextCell = matrixDOM[position[0] - 1][position[1]];
-  //   // let nextCellToAdd = matrixDOM[position[0] - 2][position[1]];
-  //   if (nextCell.classList[1] === "food_cell") {
-  //     actualSnake.push(nextCell); // pushing next element of the snake actual position
-  //     actualSnake.push(matrixDOM[position[0] - 2][position[1]]); // pushing next element of the snake actual position
-  //     currentFoodPosition.className += "snake_block_wapper";
-  //     currentFoodPosition = getFoodposition();
-  //     actualsnake = actualSnake.shift();
-  //   } else {
-  //     actualSnake.push(nextCell); // pushing next element of the snake actual position
-  //     actualsnake = actualSnake.shift(); // here we're removing last bite(element) of the snake
-  //   }
-  // }
   printSnake();
 }
 
@@ -251,10 +218,7 @@ function findPosition() {
   matrixDOM.forEach((line, lineInd) => {
     line.forEach((dot, dotInd) => {
       if (dot === actualSnake[actualSnake.length - 1]) {
-        // if (dot === actualSnake[0]) {
-        // position.push(lineInd, dotInd);
         position = [lineInd, dotInd];
-        // console.log(position);
       }
     });
   });

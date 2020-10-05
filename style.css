@@ -35,6 +35,23 @@ body {
 /* .food_cell {
   border-radius: 7px;
 } */
+.footer_wrapper {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.button {
+  width: 75px;
+  height: 75px;
+  background-color: gray;
+  color: white;
+}
+
+@media only screen and (max-width: 320px) {
+  .footer_wrapper {
+    display: flex;
+  }
+}
 @keyframes appear {
   from {
     transform: scale(0.1);
