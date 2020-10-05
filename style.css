@@ -36,6 +36,7 @@ body {
   border-radius: 7px;
 } */
 .footer_wrapper {
+  margin-top: 30px;
   justify-content: center;
   align-items: center;
   display: flex;
@@ -50,6 +51,11 @@ body {
 @media only screen and (max-width: 320px) {
   .footer_wrapper {
     display: flex;
+  }
+  .snake_block_wrapper {
+    width: 14px;
+    height: 14px;
+    border-radius: 5px;
   }
 }
 @keyframes appear {

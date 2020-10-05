@@ -16,7 +16,11 @@ let currentFoodPosition = getFoodposition();
 // console.log(currentFoodPosition);
 startGame(); // start game
 
-snakeWrapper.style.width = matrixSize * 28 + 8 + "px";
+if (window.screen.width <= 320) {
+  snakeWrapper.style.width = matrixSize * 14 + 8 + "px"; // 28 + 8
+} else {
+  snakeWrapper.style.width = matrixSize * 28 + 8 + "px"; //
+}
 function startGame() {
   printSnake(); // printing initial snake
   findPosition();
