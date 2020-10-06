@@ -5,7 +5,7 @@ let eatedFood = false; // snake eated food, we want to use it at next move, to a
 let currentDirection = "down";
 let mainInterval;
 let currentMove = moveTo("down"); // initial function to move snake
-let snakeInterval = 150; // interval to move snake
+let snakeInterval = 105; // interval to move snake
 let actualSnake = [];
 let matrixDOM = [];
 createMatrix(); // creating DOM matrix
@@ -137,7 +137,7 @@ function moveTo(direction) {
       if (nextCell === el) {
         console.error("end of game");
         clearInterval(mainInterval);
-        console.log(nextCell, currentDirection);
+        // console.log(nextCell, currentDirection);
       }
     });
     if (eatedFood) {
@@ -166,72 +166,6 @@ function moveSnake(nextCell) {
     actualSnake.push(nextCell);
     actualSnake.shift(); // removing last bite(element) of the snake
   }
-}
-
-function moveRight() {
-  currentDirection = "right"; // setting current direction
-  clear();
-
-  // new position in array depending on where is actual snake now
-  const nextCell = getNextCell(currentDirection);
-  actualSnake.forEach((el) => {
-    if (nextCell === el) {
-      console.error("end of game");
-      clearInterval(mainInterval);
-    }
-  });
-  if (eatedFood) {
-    actualSnake.push(nextCell);
-    eatedFood = false;
-  } else {
-    moveSnake(nextCell);
-  }
-
-  printSnake();
-}
-
-function moveLeft() {
-  currentDirection = "left"; // setting current direction
-  clear();
-
-  // new position in array depending on where is actual snake now
-
-  const nextCell = getNextCell(currentDirection);
-  actualSnake.forEach((el) => {
-    if (nextCell === el) {
-      console.error("end of game");
-      clearInterval(mainInterval);
-    }
-  });
-  if (eatedFood) {
-    actualSnake.push(nextCell);
-    eatedFood = false;
-  } else {
-    moveSnake(nextCell);
-  }
-  printSnake();
-}
-
-function moveUp() {
-  currentDirection = "up"; // setting current direction
-  clear();
-
-  // new position in array depending on where is actual snake now
-
-  const nextCell = getNextCell(currentDirection);
-  actualSnake.forEach((el) => {
-    if (nextCell === el) {
-      console.error("end of game");
-      clearInterval(mainInterval);
-    }
-  });
-  if (eatedFood) {
-    actualSnake.push(nextCell);
-    eatedFood = false;
-  } else {
-    moveSnake(nextCell);
-  }
-  printSnake();
 }
 
 function findPosition() {
@@ -293,3 +227,69 @@ function onKeyPress(e) {
       return;
   }
 }
+
+// function moveRight() {
+//   currentDirection = "right"; // setting current direction
+//   clear();
+
+//   // new position in array depending on where is actual snake now
+//   const nextCell = getNextCell(currentDirection);
+//   actualSnake.forEach((el) => {
+//     if (nextCell === el) {
+//       console.error("end of game");
+//       clearInterval(mainInterval);
+//     }
+//   });
+//   if (eatedFood) {
+//     actualSnake.push(nextCell);
+//     eatedFood = false;
+//   } else {
+//     moveSnake(nextCell);
+//   }
+
+//   printSnake();
+// }
+
+// function moveLeft() {
+//   currentDirection = "left"; // setting current direction
+//   clear();
+
+//   // new position in array depending on where is actual snake now
+
+//   const nextCell = getNextCell(currentDirection);
+//   actualSnake.forEach((el) => {
+//     if (nextCell === el) {
+//       console.error("end of game");
+//       clearInterval(mainInterval);
+//     }
+//   });
+//   if (eatedFood) {
+//     actualSnake.push(nextCell);
+//     eatedFood = false;
+//   } else {
+//     moveSnake(nextCell);
+//   }
+//   printSnake();
+// }
+
+// function moveUp() {
+//   currentDirection = "up"; // setting current direction
+//   clear();
+
+//   // new position in array depending on where is actual snake now
+
+//   const nextCell = getNextCell(currentDirection);
+//   actualSnake.forEach((el) => {
+//     if (nextCell === el) {
+//       console.error("end of game");
+//       clearInterval(mainInterval);
+//     }
+//   });
+//   if (eatedFood) {
+//     actualSnake.push(nextCell);
+//     eatedFood = false;
+//   } else {
+//     moveSnake(nextCell);
+//   }
+//   printSnake();
+// }
