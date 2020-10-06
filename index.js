@@ -1,5 +1,5 @@
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
-const matrixSize = 14;
+const matrixSize = 19;
 let position; // actual position of the last snake bite(element)
 let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
 let currentDirection = "down";
