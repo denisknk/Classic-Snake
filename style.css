@@ -39,7 +39,7 @@ body {
   margin-top: 30px;
   justify-content: center;
   align-items: center;
-  display: flex;
+  display: none;
 }
 .button {
   width: 75px;

@@ -1,11 +1,11 @@
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
-const matrixSize = 19;
+const matrixSize = 14;
 let position; // actual position of the last snake bite(element)
 let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
-let currentDirection;
+let currentDirection = "down";
 let mainInterval;
-let currentMove = moveDown; // initial function to move snake
-let snakeInterval = 110; // interval to move snake
+let currentMove = moveTo("down"); // initial function to move snake
+let snakeInterval = 150; // interval to move snake
 let actualSnake = [];
 let matrixDOM = [];
 createMatrix(); // creating DOM matrix
@@ -87,36 +87,69 @@ function printSnake() {
   });
   // console.timeEnd("test time");
 }
-
-function moveDown() {
-  // console.time("sn");
-  currentDirection = "down"; // setting current direction
-  clear();
-  // handle that moment when the snake is touched a bottom edge of the field
-  let newPosition; // new position in array depending on where is actual snake now
-  if (position[0] === matrixDOM.length - 2) {
-    newPosition = matrixDOM.length - 1;
-  } else if (position[0] === matrixDOM.length - 1) {
-    newPosition = 0;
-  } else {
-    newPosition = position[0] + 1;
+function getNextCell() {
+  let newPosition;
+  switch (currentDirection) {
+    case "down":
+      if (position[0] === matrixDOM.length - 1) {
+        newPosition = 0;
+      } else {
+        newPosition = position[0] + 1;
+      }
+      return matrixDOM[newPosition][position[1]];
+    case "right":
+      if (position[1] === matrixDOM[position[0]].length - 1) {
+        newPosition = 0;
+      } else {
+        newPosition = position[1] + 1;
+      }
+      return matrixDOM[position[0]][newPosition];
+    case "left":
+      if (position[1] === 0) {
+        newPosition = matrixDOM[position[0]].length - 1;
+      } else {
+        newPosition = position[1] - 1;
+      }
+      return matrixDOM[position[0]][newPosition];
+    case "up":
+      if (position[0] === 0) {
+        newPosition = matrixDOM.length - 1;
+      } else {
+        newPosition = position[0] - 1;
+      }
+      return matrixDOM[newPosition][position[1]];
+    default:
+      return;
   }
+}
 
-  let nextCell = matrixDOM[newPosition][position[1]];
-  actualSnake.forEach((el) => {
-    if (nextCell === el) {
-      console.error("end of game");
-      clearInterval(mainInterval);
+function moveTo(direction) {
+  // const directi = currentDirection;
+  function move() {
+    currentDirection = direction; // setting current direction
+    // console.time("sn");
+    clear();
+    // handle that moment when the snake is touched a bottom edge of the field
+
+    const nextCell = getNextCell(); // new position in array depending on where is actual snake now
+
+    actualSnake.forEach((el) => {
+      if (nextCell === el) {
+        console.error("end of game");
+        clearInterval(mainInterval);
+        console.log(nextCell, currentDirection);
+      }
+    });
+    if (eatedFood) {
+      actualSnake.push(nextCell);
+      eatedFood = false;
+    } else {
+      moveSnake(nextCell);
     }
-  });
-  if (eatedFood) {
-    actualSnake.push(nextCell);
-    eatedFood = false;
-  } else {
-    moveSnake(nextCell);
+    printSnake();
+    // console.timeEnd("sn");
   }
-  printSnake();
-  // console.timeEnd("sn");
+  return move;
 }
 
 function moveSnake(nextCell) {
@@ -139,16 +172,8 @@ function moveRight() {
   currentDirection = "right"; // setting current direction
   clear();
 
-  let newPosition; // new position in array depending on where is actual snake now
-  if (position[1] === matrixDOM[position[0]].length - 2) {
-    newPosition = matrixDOM[position[0]].length - 1;
-  } else if (position[1] === matrixDOM[position[0]].length - 1) {
-    newPosition = 0;
-  } else {
-    newPosition = position[1] + 1;
-  }
-
-  let nextCell = matrixDOM[position[0]][newPosition];
+  // new position in array depending on where is actual snake now
+  const nextCell = getNextCell(currentDirection);
   actualSnake.forEach((el) => {
     if (nextCell === el) {
       console.error("end of game");
@@ -169,13 +194,9 @@ function moveLeft() {
   currentDirection = "left"; // setting current direction
   clear();
 
-  let newPosition; // new position in array depending on where is actual snake now
-  if (position[1] === 0) {
-    newPosition = matrixDOM[position[0]].length - 1;
-  } else {
-    newPosition = position[1] - 1;
-  }
-  let nextCell = matrixDOM[position[0]][newPosition];
+  // new position in array depending on where is actual snake now
+
+  const nextCell = getNextCell(currentDirection);
   actualSnake.forEach((el) => {
     if (nextCell === el) {
       console.error("end of game");
@@ -195,14 +216,9 @@ function moveUp() {
   currentDirection = "up"; // setting current direction
   clear();
 
-  let newPosition; // new position in array depending on where is actual snake now
-  if (position[0] === 0) {
-    newPosition = matrixDOM.length - 1;
-  } else {
-    newPosition = position[0] - 1;
-  }
+  // new position in array depending on where is actual snake now
 
-  let nextCell = matrixDOM[newPosition][position[1]];
+  const nextCell = getNextCell(currentDirection);
   actualSnake.forEach((el) => {
     if (nextCell === el) {
       console.error("end of game");
@@ -254,20 +270,24 @@ function onKeyPress(e) {
   switch (key) {
     case "ArrowDown":
       if (currentDirection === "up") return; // return if we press move down while mooving up
-      currentMove = moveDown;
+
+      currentMove = moveTo("down");
       break;
     case "ArrowRight":
       if (currentDirection === "left") return; // return if we press move to right while mooving left
       // console.log("right", currentDirection);
-      currentMove = moveRight;
+      // currentDirection = "right"; // setting current direction
+      currentMove = moveTo("right");
       break;
     case "ArrowLeft":
       if (currentDirection === "right") return; // return if we press move right while mooving left
-      currentMove = moveLeft;
+      // currentDirection = "left"; // setting current direction
+      currentMove = moveTo("left");
       break;
     case "ArrowUp":
       if (currentDirection === "down") return; // return if we press move up while mooving down
-      currentMove = moveUp;
+      // currentDirection = "up"; // setting current direction
+      currentMove = moveTo("up");
       break;
     default:
       return;
