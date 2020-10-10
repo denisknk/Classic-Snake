@@ -3,7 +3,7 @@
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
 // const buttons = document.querySelector(".footer").elements;
 // const buttons = document.getElementById("my_form").elements;
-const buttons = document.getElementById("my_form").children;
+const buttons = document.querySelectorAll(".button");
 // document.getElementById("someFormId").elements;
 const matrixSize = 19;
 let position; // actual position of the last snake bite(element)
@@ -232,7 +232,6 @@ function onKeyPress(e) {
       break;
     case "button_down":
       if (currentDirection === "up") return; // return if we press move down while mooving up
-      console.log("setting");
       currentMove = moveTo("down");
       break;
     case "ArrowRight" || "button_right":

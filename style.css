@@ -37,8 +37,9 @@ body {
 } */
 .footer_wrapper {
   margin-top: 30px;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  width: 70vw;
+  margin: 30px auto 0 auto;
   display: none;
 }
 .button {
@@ -48,9 +49,23 @@ body {
   color: white;
 }
 
+.horisontal_wrapper_1 {
+  display: flex;
+  justify-content: center;
+}
+.horisontal_wrapper_2 {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+.horisontal_wrapper_3 {
+  display: flex;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 992px) {
   .footer_wrapper {
-    display: flex;
+    display: block;
   }
   .snake_block_wrapper {
     /* --widthA: calc(100% / 30);
