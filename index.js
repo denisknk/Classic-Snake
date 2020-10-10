@@ -229,6 +229,8 @@ function createMatrix() {
 }
 
 function onKeyPress(e) {
+  console.log(e);
+  e.stopPropagation();
   const key = e.key || e.target.classList[0];
   switch (key) {
     case "ArrowDown" || "button_down":
@@ -276,69 +278,3 @@ function onKeyPress(e) {
       return;
   }
 }
-
-// function moveRight() {
-//   currentDirection = "right"; // setting current direction
-//   clear();
-
-//   // new position in array depending on where is actual snake now
-//   const nextCell = getNextCell(currentDirection);
-//   actualSnake.forEach((el) => {
-//     if (nextCell === el) {
-//       console.error("end of game");
-//       clearInterval(mainInterval);
-//     }
-//   });
-//   if (eatedFood) {
-//     actualSnake.push(nextCell);
-//     eatedFood = false;
-//   } else {
-//     moveSnake(nextCell);
-//   }
-
-//   printSnake();
-// }
-
-// function moveLeft() {
-//   currentDirection = "left"; // setting current direction
-//   clear();
-
-//   // new position in array depending on where is actual snake now
-
-//   const nextCell = getNextCell(currentDirection);
-//   actualSnake.forEach((el) => {
-//     if (nextCell === el) {
-//       console.error("end of game");
-//       clearInterval(mainInterval);
-//     }
-//   });
-//   if (eatedFood) {
-//     actualSnake.push(nextCell);
-//     eatedFood = false;
-//   } else {
-//     moveSnake(nextCell);
-//   }
-//   printSnake();
-// }
-
-// function moveUp() {
-//   currentDirection = "up"; // setting current direction
-//   clear();
-
-//   // new position in array depending on where is actual snake now
-
-//   const nextCell = getNextCell(currentDirection);
-//   actualSnake.forEach((el) => {
-//     if (nextCell === el) {
-//       console.error("end of game");
-//       clearInterval(mainInterval);
-//     }
-//   });
-//   if (eatedFood) {
-//     actualSnake.push(nextCell);
-//     eatedFood = false;
-//   } else {
-//     moveSnake(nextCell);
-//   }
-//   printSnake();
-// }
