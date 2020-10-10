@@ -1,4 +1,9 @@
+"use strict";
+
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
+// const buttons = document.querySelector(".footer").elements;
+const buttons = document.getElementById("my_form").elements;
+// document.getElementById("someFormId").elements;
 const matrixSize = 19;
 let position; // actual position of the last snake bite(element)
 let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
@@ -13,14 +18,28 @@ actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]]; // setting up
 document.addEventListener("keydown", onKeyPress); // event listener for key press
 let food;
 let currentFoodPosition = getFoodposition();
-// console.log(currentFoodPosition);
-startGame(); // start game
+const windowWidt = window.innerWidth;
 
-if (window.screen.width <= 320) {
+if (windowWidt <= 992) {
   snakeWrapper.style.width = matrixSize * 14 + 8 + "px"; // 28 + 8
 } else {
   snakeWrapper.style.width = matrixSize * 28 + 8 + "px"; //
 }
+
+startGame(); // start game
+
+buttonsHandle();
+function buttonsHandle() {
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("touchstart", onKeyPress); //touchstart
+  }
+  // function handleStart(e) {
+  //   e.preventDefault();
+  //   const move = e.target.classList[0];
+  //   console.log(move);
+  // }
+}
+
 function startGame() {
   printSnake(); // printing initial snake
   findPosition();
@@ -199,26 +218,28 @@ function createMatrix() {
 }
 
 function onKeyPress(e) {
+  // e.preventdefault();
   // handle key press
-  const key = e.key;
+  // console.log("here");
+  const key = e.key || e.target.classList[0];
+  console.log(key);
   switch (key) {
-    case "ArrowDown":
+    case "ArrowDown" || "button_down":
       if (currentDirection === "up") return; // return if we press move down while mooving up
-
       currentMove = moveTo("down");
       break;
-    case "ArrowRight":
+    case "ArrowRight" || "button_right":
       if (currentDirection === "left") return; // return if we press move to right while mooving left
       // console.log("right", currentDirection);
       // currentDirection = "right"; // setting current direction
       currentMove = moveTo("right");
       break;
-    case "ArrowLeft":
+    case "ArrowLeft" || "button_left":
       if (currentDirection === "right") return; // return if we press move right while mooving left
       // currentDirection = "left"; // setting current direction
       currentMove = moveTo("left");
       break;
-    case "ArrowUp":
+    case "ArrowUp" || "button_up":
       if (currentDirection === "down") return; // return if we press move up while mooving down
       // currentDirection = "up"; // setting current direction
       currentMove = moveTo("up");
