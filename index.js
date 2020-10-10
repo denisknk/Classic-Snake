@@ -30,6 +30,15 @@ if (windowWidt <= 992) {
 startGame(); // start game
 
 buttonsHandle();
+if ("addEventListener" in document) {
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+      FastClick.attach(document.body);
+    },
+    false
+  );
+}
 function buttonsHandle() {
   // console.log(buttons);
   for (let i = 0; i < buttons.length; i++) {
@@ -220,7 +229,6 @@ function createMatrix() {
 }
 
 function onKeyPress(e) {
-  // e.preventdefault();
   const key = e.key || e.target.classList[0];
   switch (key) {
     case "ArrowDown" || "button_down":
