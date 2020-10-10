@@ -221,8 +221,6 @@ function createMatrix() {
 
 function onKeyPress(e) {
   // e.preventdefault();
-  // handle key press
-  // console.log("here");
   const key = e.key || e.target.classList[0];
   switch (key) {
     case "ArrowDown" || "button_down":
