@@ -42,7 +42,7 @@ if ("addEventListener" in document) {
 function buttonsHandle() {
   // console.log(buttons);
   for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("touchstart", onKeyPress); //touchstart
+    buttons[i].addEventListener("touchend", onKeyPress); //touchstart
   }
   // function handleStart(e) {
   //   e.preventDefault();
