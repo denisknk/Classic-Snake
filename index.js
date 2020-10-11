@@ -1,9 +1,11 @@
 "use strict";
 
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
+
 // const buttons = document.querySelector(".footer").elements;
 // const buttons = document.getElementById("my_form").elements;
 const buttons = document.querySelectorAll(".button");
+const startButtons = document.querySelectorAll(".choose_level");
 // document.getElementById("someFormId").elements;
 const matrixSize = 19;
 let position; // actual position of the last snake bite(element)
@@ -26,21 +28,25 @@ if (windowWidt <= 992) {
 } else {
   snakeWrapper.style.width = matrixSize * 28 + 8 + "px"; //
 }
-
-startGame(); // start game
+printSnake(); // printing initial snake
+// startGame(); // start game
 
 buttonsHandle();
-if ("addEventListener" in document) {
-  document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-      FastClick.attach(document.body);
-    },
-    false
-  );
-}
+// if ("addEventListener" in document) {
+//   document.addEventListener(
+//     "DOMContentLoaded",
+//     function () {
+//       FastClick.attach(document.body);
+//     },
+//     false
+//   );
+// }
 function buttonsHandle() {
+  console.log(startButtons);
   // console.log(buttons);
+  for (let i = 0; i < startButtons.length; i++) {
+    startButtons[i].addEventListener("click", chooseLevelHandler);
+  }
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener("touchend", onKeyPress); //touchstart
   }
@@ -52,7 +58,6 @@ function buttonsHandle() {
 }
 
 function startGame() {
-  printSnake(); // printing initial snake
   findPosition();
   // currentMove();
   mainInterval = setInterval(() => {
@@ -228,12 +233,35 @@ function createMatrix() {
   // console.timeEnd("create matrix");
 }
 
+function chooseLevelHandler(e) {
+  const startMenu = document.querySelector(".start_game");
+  // e.stopPropagation();
+
+  const level = e.target.classList[0];
+
+  switch (level) {
+    case "easy":
+      snakeInterval = 130;
+      break;
+    case "medium":
+      snakeInterval = 100;
+      break;
+    case "hard":
+      snakeInterval = 65;
+      break;
+    default:
+      break;
+  }
+  startMenu.style.display = "none";
+  startGame();
+  console.log(snakeInterval);
+}
+
 function onKeyPress(e) {
-  console.log(e);
   e.stopPropagation();
   const key = e.key || e.target.classList[0];
   switch (key) {
-    case "ArrowDown" || "button_down":
+    case "ArrowDown":
       if (currentDirection === "up") return; // return if we press move down while mooving up
       console.log("setting");
       currentMove = moveTo("down");
@@ -242,7 +270,7 @@ function onKeyPress(e) {
       if (currentDirection === "up") return; // return if we press move down while mooving up
       currentMove = moveTo("down");
       break;
-    case "ArrowRight" || "button_right":
+    case "ArrowRight":
       if (currentDirection === "left") return; // return if we press move to right while mooving left
       // console.log("right", currentDirection);
       // currentDirection = "right"; // setting current direction
@@ -254,7 +282,7 @@ function onKeyPress(e) {
       // currentDirection = "right"; // setting current direction
       currentMove = moveTo("right");
       break;
-    case "ArrowLeft" || "button_left":
+    case "ArrowLeft":
       if (currentDirection === "right") return; // return if we press move right while mooving left
       // currentDirection = "left"; // setting current direction
       currentMove = moveTo("left");
@@ -264,7 +292,7 @@ function onKeyPress(e) {
       // currentDirection = "left"; // setting current direction
       currentMove = moveTo("left");
       break;
-    case "ArrowUp" || "button_up":
+    case "ArrowUp":
       if (currentDirection === "down") return; // return if we press move up while mooving down
       // currentDirection = "up"; // setting current direction
       currentMove = moveTo("up");

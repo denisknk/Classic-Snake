@@ -7,12 +7,24 @@
       name="viewport"
       content="width=device-width, maximum-scale=1.0, minimum-scale=1.0"
     /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no"">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
     <title>Snake</title>
-    <link rel="stylesheet" href="./style.css" />
+  
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;800&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <div class="snake_parent_wrapper"></div>
+    <div class="snake_parent_wrapper">
+      <div class="start_game">
+        <header class="start_header"><div class="start_food_cell snake_block_wrapper"></div><h1>SNAKE</h1> <div class="start_food_cell snake_block_wrapper"></div></header>
+        <div class="info">CHOOSE LEVEL:</div>
+        <div class="choose_level">
+          <span class="easy">EASY</span>
+          <span class="medium">MEDIUM</span>
+          <span class="hard">HARD</span>
+        </div>
+      </div>
+    </div>
     <footer class="footer_wrapper">
 <div class="horisontal_wrapper_1">
     <button class="button_up button">&#8593;</button>
