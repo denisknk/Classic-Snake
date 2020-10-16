@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
 
@@ -42,7 +42,7 @@ buttonsHandle();
 //   );
 // }
 function buttonsHandle() {
-  console.log(startButtons);
+  // console.log(startButtons);
   // console.log(buttons);
   for (let i = 0; i < startButtons.length; i++) {
     startButtons[i].addEventListener("click", chooseLevelHandler);
@@ -241,20 +241,19 @@ function chooseLevelHandler(e) {
 
   switch (level) {
     case "easy":
-      snakeInterval = 130;
+      snakeInterval = 135;
       break;
     case "medium":
-      snakeInterval = 100;
+      snakeInterval = 95;
       break;
     case "hard":
-      snakeInterval = 65;
+      snakeInterval = 58;
       break;
     default:
       break;
   }
   startMenu.style.display = "none";
   startGame();
-  console.log(snakeInterval);
 }
 
 function onKeyPress(e) {

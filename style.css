@@ -143,6 +143,19 @@ h1 {
     height: 14px;
     border-radius: 5px;
   }
+  h1 {
+  
+  font-size: 1.2em;
+  
+}
+.info{
+font-size: 1.2em;
+}
+.choose_level span {
+
+  font-size: 1em;
+ 
+}
 }
 @keyframes appear {
   from {
