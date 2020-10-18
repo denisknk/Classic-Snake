@@ -145,16 +145,19 @@ h1 {
   font-weight: 600;
   padding: 23% 0 23% 0;
 }
+.fas {
+  cursor: pointer;
+}
 .count {
   position: absolute;
-  bottom: -27%;
+  bottom: -14%;
   font-size: 3em;
   display: block;
 }
 .best_score {
   position: absolute;
   right: 0;
-  bottom: -27%;
+  bottom: -14%;
   font-size: 3em;
 }
 
