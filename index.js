@@ -1,23 +1,28 @@
 // "use strict";
 
-const test = document.querySelector(".test");
-let count = 0;
-
+const printCount = document.querySelector(".count");
+const bestScoreDiv = document.querySelector(".best_score");
 const snakeWrapper = document.querySelector(".snake_parent_wrapper");
+const startAgainIcon = document.querySelector(".fas");
+startAgainIcon.addEventListener("click", startAgain);
 const buttons = document.querySelectorAll(".button");
 const startButtons = document.querySelectorAll(".choose_level");
 const overlay = document.querySelector(".overlay");
+const startMenu = document.querySelector(".start_game");
 const matrixSize = 19;
+let pointToAdd;
+let count = 0;
+let bestScore = 0;
 let position; // actual position of the last snake bite(element)
 let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
 let currentDirection = "down";
 let mainInterval;
 let currentMove = moveTo("down"); // initial function to move snake
 let snakeInterval = 105; // interval to move snake
-let actualSnake = [];
+// let actualSnake = [];
 let matrixDOM = [];
 createMatrix(); // creating DOM matrix
-actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]]; // setting up the initial snake
+let actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]]; // setting up the initial snake
 document.addEventListener("keydown", onKeyPress); // event listener for key press
 let food;
 let currentFoodPosition = getFoodposition();
@@ -65,7 +70,6 @@ function getFoodposition() {
       if (el === matrixDOM[y][x]) {
         createRand();
         checkFoodPosition();
-        console.log("true first time");
       }
     });
   }
@@ -163,6 +167,12 @@ function moveTo(direction) {
     });
     if (eatedFood) {
       actualSnake.push(nextCell);
+      count += pointToAdd;
+      if (count > bestScore) {
+        bestScore = count;
+      }
+      bestScoreDiv.innerHTML = bestScore;
+      printCount.innerHTML = count;
       eatedFood = false;
     } else {
       moveSnake(nextCell);
@@ -220,7 +230,6 @@ function createMatrix() {
 }
 
 function chooseLevelHandler(e) {
-  const startMenu = document.querySelector(".start_game");
   // e.stopPropagation();
 
   const level = e.target.classList[0];
@@ -228,12 +237,15 @@ function chooseLevelHandler(e) {
   switch (level) {
     case "easy":
       snakeInterval = 135;
+      pointToAdd = 4;
       break;
     case "medium":
       snakeInterval = 95;
+      pointToAdd = 6;
       break;
     case "hard":
       snakeInterval = 60;
+      pointToAdd = 8;
       break;
     default:
       break;
@@ -243,14 +255,11 @@ function chooseLevelHandler(e) {
 }
 
 function onKeyPress(e) {
-  count += 1;
-  test.innerHTML = count;
   e.stopPropagation();
   const key = e.key || e.target.classList[0];
   switch (key) {
     case "ArrowDown":
       if (currentDirection === "up") return; // return if we press move down while mooving up
-      console.log("setting");
       currentMove = moveTo("down");
       break;
     case "button_down":
@@ -284,4 +293,18 @@ function onKeyPress(e) {
     default:
       return;
   }
+}
+
+function startAgain() {
+  actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]];
+  // console.log(initialSnake);
+  clear();
+  printSnake();
+  overlay.style.display = "none";
+  snakeWrapper.classList.remove("shake");
+  currentDirection = "down";
+  currentMove = moveTo("down");
+  startMenu.style.display = "block";
+  count = 0;
+  printCount.innerHTML = count;
 }

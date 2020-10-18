@@ -145,11 +145,17 @@ h1 {
   font-weight: 600;
   padding: 23% 0 23% 0;
 }
-.test {
+.count {
   position: absolute;
-  left: -19%;
+  bottom: -27%;
   font-size: 3em;
-  display: none;
+  display: block;
+}
+.best_score {
+  position: absolute;
+  right: 0;
+  bottom: -27%;
+  font-size: 3em;
 }
 
 .shake {
@@ -160,6 +166,9 @@ h1 {
 }
 
 @media only screen and (max-width: 992px) {
+  .overlay {
+    font-size: 3em;
+  }
   .footer_wrapper {
     display: block;
   }
@@ -171,8 +180,13 @@ h1 {
     height: 14px;
     border-radius: 5px;
   }
-  .test {
-    display: block;
+  .count {
+    font-size: 2em;
+    bottom: -18%;
+  }
+  .best_score {
+    font-size: 2em;
+    bottom: -18%;
   }
   h1 {
     font-size: 1.2em;
