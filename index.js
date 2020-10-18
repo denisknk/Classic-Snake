@@ -1,12 +1,12 @@
 // "use strict";
 
-const snakeWrapper = document.querySelector(".snake_parent_wrapper");
+const test = document.querySelector(".test");
+let count = 0;
 
-// const buttons = document.querySelector(".footer").elements;
-// const buttons = document.getElementById("my_form").elements;
+const snakeWrapper = document.querySelector(".snake_parent_wrapper");
 const buttons = document.querySelectorAll(".button");
 const startButtons = document.querySelectorAll(".choose_level");
-// document.getElementById("someFormId").elements;
+const overlay = document.querySelector(".overlay");
 const matrixSize = 19;
 let position; // actual position of the last snake bite(element)
 let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
@@ -29,32 +29,15 @@ if (windowWidt <= 992) {
   snakeWrapper.style.width = matrixSize * 28 + 8 + "px"; //
 }
 printSnake(); // printing initial snake
-// startGame(); // start game
+mobileButtonsHandle();
 
-buttonsHandle();
-// if ("addEventListener" in document) {
-//   document.addEventListener(
-//     "DOMContentLoaded",
-//     function () {
-//       FastClick.attach(document.body);
-//     },
-//     false
-//   );
-// }
-function buttonsHandle() {
-  // console.log(startButtons);
-  // console.log(buttons);
+function mobileButtonsHandle() {
   for (let i = 0; i < startButtons.length; i++) {
     startButtons[i].addEventListener("click", chooseLevelHandler);
   }
   for (let i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener("touchend", onKeyPress); //touchstart
   }
-  // function handleStart(e) {
-  //   e.preventDefault();
-  //   const move = e.target.classList[0];
-  //   console.log(move);
-  // }
 }
 
 function startGame() {
@@ -170,8 +153,11 @@ function moveTo(direction) {
 
     actualSnake.forEach((el) => {
       if (nextCell === el) {
-        console.error("end of game");
+        // console.error("end of game");
+
         clearInterval(mainInterval);
+        overlay.style.display = "flex";
+        snakeWrapper.classList.add("shake");
         // console.log(nextCell, currentDirection);
       }
     });
@@ -247,7 +233,7 @@ function chooseLevelHandler(e) {
       snakeInterval = 95;
       break;
     case "hard":
-      snakeInterval = 58;
+      snakeInterval = 60;
       break;
     default:
       break;
@@ -257,6 +243,8 @@ function chooseLevelHandler(e) {
 }
 
 function onKeyPress(e) {
+  count += 1;
+  test.innerHTML = count;
   e.stopPropagation();
   const key = e.key || e.target.classList[0];
   switch (key) {
@@ -271,34 +259,26 @@ function onKeyPress(e) {
       break;
     case "ArrowRight":
       if (currentDirection === "left") return; // return if we press move to right while mooving left
-      // console.log("right", currentDirection);
-      // currentDirection = "right"; // setting current direction
       currentMove = moveTo("right");
       break;
     case "button_right":
       if (currentDirection === "left") return; // return if we press move to right while mooving left
-      // console.log("right", currentDirection);
-      // currentDirection = "right"; // setting current direction
       currentMove = moveTo("right");
       break;
     case "ArrowLeft":
       if (currentDirection === "right") return; // return if we press move right while mooving left
-      // currentDirection = "left"; // setting current direction
       currentMove = moveTo("left");
       break;
     case "button_left":
       if (currentDirection === "right") return; // return if we press move right while mooving left
-      // currentDirection = "left"; // setting current direction
       currentMove = moveTo("left");
       break;
     case "ArrowUp":
       if (currentDirection === "down") return; // return if we press move up while mooving down
-      // currentDirection = "up"; // setting current direction
       currentMove = moveTo("up");
       break;
     case "button_up":
       if (currentDirection === "down") return; // return if we press move up while mooving down
-      // currentDirection = "up"; // setting current direction
       currentMove = moveTo("up");
       break;
     default:
