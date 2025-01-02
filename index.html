@@ -1,53 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="icon" href="./favicon.ico" />
-    <meta charset="UTF-8" />
-    <!-- <meta
-      name="viewport"
-      content="width=device-width, maximum-scale=1.0, minimum-scale=1.0"
-    /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
-    <title>Snake</title>
-  
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;800&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="snake_parent_wrapper">
-      <div class="start_game">
-        <header class="start_header"><div class="start_food_cell snake_block_wrapper"></div><h1>SNAKE</h1> <div class="start_food_cell snake_block_wrapper"></div></header>
-        <div class="info">CHOOSE LEVEL:</div>
-        <div class="choose_level">
-          <span class="easy">EASY</span>
-          <span class="medium">MEDIUM</span>
-          <span class="hard">HARD</span>
-        </div>
-      </div>
-      <div class="overlay">
-        <p>GAME</p>
-        <p>OVER!</p>
-        <p><i class="fas fa-undo"></i></p>
-      </div>
-      <div class="count">0</div>
-      <div class="best_score">0</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Snake</title>
+  <meta name="description" content="Classic Snake Game" />
+  <meta property="og:title" content="Classic Snake Game" />
+  <meta property="og:description" content="Play the classic snake game online." />
+  <meta property="og:image" content="path/to/your/image.png" />
+  <meta property="og:url" content="https://denisknk.github.io/Classic-Snake/" />
+  <link rel="icon" href="./favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+<div class="snake_parent_wrapper">
+  <div class="start_game">
+    <header class="start_header">
+      <div class="start_food_cell snake_block_wrapper" aria-label="Food Cell"></div>
+      <h1>SNAKE</h1>
+      <div class="start_food_cell snake_block_wrapper" aria-label="Food Cell"></div>
+    </header>
+    <div class="info">CHOOSE LEVEL:</div>
+    <div class="choose_level">
+      <span class="easy" role="button" tabindex="0">EASY</span>
+      <span class="medium" role="button" tabindex="0">MEDIUM</span>
+      <span class="hard" role="button" tabindex="0">HARD</span>
     </div>
-    <footer class="footer_wrapper">
-<div class="horisontal_wrapper_1">
-    <button class="button_up button">&#8593;</button>
-
+  </div>
+  <div class="overlay" role="alert">
+    <p>GAME</p>
+    <p>OVER!</p>
+    <p><i class="fas fa-undo" aria-label="Restart"></i></p>
+  </div>
+  <div class="count" aria-live="polite">0</div>
+  <div class="best_score" aria-live="polite">0</div>
 </div>
-<div class="horisontal_wrapper_2">
-  <button class="button_left button">&#8592;</button>
-  <button class="button_right button">&#8594;</button>
-</div>
-<div class="horisontal_wrapper_3">
-  <button class="button_down button">&#8595;</button>
-</div>
-    </footer>
-    <script type='application/javascript' src='./fastclick.js'></script>
-    <script src="https://kit.fontawesome.com/0296de27d9.js" crossorigin="anonymous"></script>
-    <script src="./index.js"></script>
-    
-  </body>
+<footer class="footer_wrapper">
+  <div class="horisontal_wrapper_1">
+    <button class="button_up button" aria-label="Move Up">&#8593;</button>
+  </div>
+  <div class="horisontal_wrapper_2">
+    <button class="button_left button" aria-label="Move Left">&#8592;</button>
+    <button class="button_right button" aria-label="Move Right">&#8594;</button>
+  </div>
+  <div class="horisontal_wrapper_3">
+    <button class="button_down button" aria-label="Move Down">&#8595;</button>
+  </div>
+</footer>
+<script type="application/javascript" src="./fastclick.js"></script>
+<script src="https://kit.fontawesome.com/0296de27d9.js" crossorigin="anonymous"></script>
+<script src="./index.js"></script>
+</body>
 </html>
