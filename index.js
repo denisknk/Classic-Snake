@@ -2,7 +2,7 @@ const matrixSize = 19;
 const printCount = document.querySelector('.count');
 const bestScoreDiv = document.querySelector('.best_score');
 const snakeWrapper = document.querySelector('.snake_parent_wrapper');
-const startAgainIcon = document.querySelector('.fas');
+const startAgainIcon = document.querySelector('.restart-icon');
 const buttons = document.querySelectorAll('.button');
 const startButtons = document.querySelectorAll('.choose_level');
 const overlay = document.querySelector('.overlay');
@@ -12,18 +12,18 @@ const pointsPerLevel = {
   medium: 2,
   hard: 3,
 };
-const snakeIntervalPerLevel = { easy: 135, medium: 95, hard: 60 };
+const snakeIntervalPerLevel = { easy: 135, medium: 95, hard: 50 };
 const snakeBodyColor = 'rgba(0,0,0,.75)';
 const fieldBackgroundColor = '#9bba5a';
 let pointToAdd;
 let count = 0;
 let bestScore = 0;
-let position; // actual position of the last snake bite(element)
+let position;
 let foodEaten = false;
 let currentDirection = 'down';
 let mainInterval;
-let currentMove = moveTo('down'); // initial function to move snake
-let snakeInterval = 105; // interval to move snake
+let currentMove = moveTo('down');
+let snakeInterval = snakeIntervalPerLevel.easy;
 let matrixDOM = [];
 let actualSnake = [];
 let currentFoodPosition;
@@ -131,7 +131,7 @@ function endGame() {
   overlay.style.display = 'flex';
   snakeWrapper.classList.add('shake');
   const oldBestScore = localStorage.getItem('bestScore');
-  if (oldBestScore && oldBestScore < bestScore) {
+  if (!oldBestScore || oldBestScore < bestScore) {
     localStorage.setItem('bestScore', bestScore);
   }
 }
