@@ -1,64 +1,71 @@
-// "use strict";
-
-const printCount = document.querySelector(".count");
-const bestScoreDiv = document.querySelector(".best_score");
-const snakeWrapper = document.querySelector(".snake_parent_wrapper");
-const startAgainIcon = document.querySelector(".fas");
-startAgainIcon.addEventListener("click", startAgain);
-const buttons = document.querySelectorAll(".button");
-const startButtons = document.querySelectorAll(".choose_level");
-const overlay = document.querySelector(".overlay");
-const startMenu = document.querySelector(".start_game");
 const matrixSize = 19;
+const printCount = document.querySelector('.count');
+const bestScoreDiv = document.querySelector('.best_score');
+const snakeWrapper = document.querySelector('.snake_parent_wrapper');
+const startAgainIcon = document.querySelector('.fas');
+const buttons = document.querySelectorAll('.button');
+const startButtons = document.querySelectorAll('.choose_level');
+const overlay = document.querySelector('.overlay');
+const startMenu = document.querySelector('.start_game');
+const pointsPerLevel = {
+  easy: 1,
+  medium: 2,
+  hard: 3,
+};
+const snakeIntervalPerLevel = { easy: 135, medium: 95, hard: 60 };
+const snakeBodyColor = 'rgba(0,0,0,.75)';
+const fieldBackgroundColor = '#9bba5a';
 let pointToAdd;
 let count = 0;
 let bestScore = 0;
 let position; // actual position of the last snake bite(element)
-let eatedFood = false; // snake eated food, we want to use it at next move, to add length to actualSnake;
-let currentDirection = "down";
+let foodEaten = false;
+let currentDirection = 'down';
 let mainInterval;
-let currentMove = moveTo("down"); // initial function to move snake
+let currentMove = moveTo('down'); // initial function to move snake
 let snakeInterval = 105; // interval to move snake
-// let actualSnake = [];
 let matrixDOM = [];
-createMatrix(); // creating DOM matrix
-let actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]]; // setting up the initial snake
-document.addEventListener("keydown", onKeyPress); // event listener for key press
-let food;
-let currentFoodPosition = getFoodposition();
-const windowWidt = window.innerWidth;
+let actualSnake = [];
+let currentFoodPosition;
 
-if (windowWidt <= 992) {
-  snakeWrapper.style.width = matrixSize * 14 + 8 + "px"; // 28 + 8
-} else {
-  snakeWrapper.style.width = matrixSize * 28 + 8 + "px"; //
-}
-printSnake(); // printing initial snake
+// Event Listeners
+document.addEventListener('DOMContentLoaded', onInit);
+startAgainIcon.addEventListener('click', startAgain);
+document.addEventListener('keydown', onKeyPress);
 mobileButtonsHandle();
 
+// Initialize Game
+createMatrix();
+actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]];
+currentFoodPosition = getFoodPosition();
+adjustWrapperWidth();
+printSnake();
+
+// Functions
 function mobileButtonsHandle() {
-  for (let i = 0; i < startButtons.length; i++) {
-    startButtons[i].addEventListener("click", chooseLevelHandler);
-  }
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener("touchend", onKeyPress); //touchstart
+  startButtons.forEach((button) => button.addEventListener('click', chooseLevelHandler));
+  buttons.forEach((button) => button.addEventListener('touchend', onKeyPress));
+}
+
+function onInit() {
+  const storedBestScore = localStorage.getItem('bestScore');
+  if (storedBestScore) {
+    bestScore = parseInt(storedBestScore, 10);
+    bestScoreDiv.innerHTML = bestScore;
   }
 }
 
 function startGame() {
   findPosition();
-  // currentMove();
   mainInterval = setInterval(() => {
-    findPosition(); // we can find actual position of the last snake bite(element)
-    currentMove(); // here we call current move function in a interval
-
-    // console.log(actualSnake.length);
+    findPosition();
+    currentMove();
   }, snakeInterval);
 }
-function getFoodposition() {
+
+function getFoodPosition() {
   const size = matrixSize - 1;
-  let y;
-  let x;
+  let y, x;
   const createRand = () => {
     y = Math.floor(Math.random() * size) + 1;
     x = Math.floor(Math.random() * size) + 1;
@@ -73,99 +80,73 @@ function getFoodposition() {
       }
     });
   }
-
-  matrixDOM[y][x].classList.add("food_cell");
-  food = [y, x];
+  matrixDOM[y][x].classList.add('food_cell');
   return matrixDOM[y][x];
 }
+
 function clear() {
-  // console.time("test time");
-  matrixDOM.forEach((el) => {
-    el.forEach((elem) => {
-      // by this if we want to keep our snake food from clearing every time
-      if (elem !== currentFoodPosition) {
-        elem.style.backgroundColor = "#9bba5a";
-        // elem.classList = "snake_block_wapper";
-        // elem.style.backgroundImage = "none";
+  matrixDOM.forEach((row) => {
+    row.forEach((cell) => {
+      if (cell !== currentFoodPosition) {
+        cell.style.backgroundColor = fieldBackgroundColor;
       }
-      // "white";
     });
   });
-  // console.timeEnd("test time");
 }
 
 function printSnake() {
-  // console.time("test time");
-  matrixDOM.forEach((el, i) => {
-    el.forEach((elem, ind) => {
+  matrixDOM.forEach((row) => {
+    row.forEach((cell) => {
       actualSnake.forEach((bite) => {
-        if (elem === bite) {
-          elem.style.backgroundColor = "rgba(0,0,0,.75)";
-          // elem.classList += "snake";
-          // "#af5";
+        if (cell === bite) {
+          cell.style.backgroundColor = snakeBodyColor;
         }
       });
     });
   });
-  // console.timeEnd("test time");
 }
+
 function getNextCell() {
   let newPosition;
   switch (currentDirection) {
-    case "down":
-      if (position[0] === matrixDOM.length - 1) {
-        newPosition = 0;
-      } else {
-        newPosition = position[0] + 1;
-      }
+    case 'down':
+      newPosition = position[0] === matrixDOM.length - 1 ? 0 : position[0] + 1;
       return matrixDOM[newPosition][position[1]];
-    case "right":
-      if (position[1] === matrixDOM[position[0]].length - 1) {
-        newPosition = 0;
-      } else {
-        newPosition = position[1] + 1;
-      }
+    case 'right':
+      newPosition = position[1] === matrixDOM[position[0]].length - 1 ? 0 : position[1] + 1;
       return matrixDOM[position[0]][newPosition];
-    case "left":
-      if (position[1] === 0) {
-        newPosition = matrixDOM[position[0]].length - 1;
-      } else {
-        newPosition = position[1] - 1;
-      }
+    case 'left':
+      newPosition = position[1] === 0 ? matrixDOM[position[0]].length - 1 : position[1] - 1;
       return matrixDOM[position[0]][newPosition];
-    case "up":
-      if (position[0] === 0) {
-        newPosition = matrixDOM.length - 1;
-      } else {
-        newPosition = position[0] - 1;
-      }
+    case 'up':
+      newPosition = position[0] === 0 ? matrixDOM.length - 1 : position[0] - 1;
       return matrixDOM[newPosition][position[1]];
     default:
       return;
   }
 }
 
+function endGame() {
+  clearInterval(mainInterval);
+  overlay.style.display = 'flex';
+  snakeWrapper.classList.add('shake');
+  const oldBestScore = localStorage.getItem('bestScore');
+  if (oldBestScore && oldBestScore < bestScore) {
+    localStorage.setItem('bestScore', bestScore);
+  }
+}
+
 function moveTo(direction) {
-  // const directi = currentDirection;
-  function move() {
-    currentDirection = direction; // setting current direction
-    // console.time("sn");
+  return function move() {
+    currentDirection = direction;
     clear();
-    // handle that moment when the snake is touched a bottom edge of the field
-
-    const nextCell = getNextCell(); // new position in array depending on where is actual snake now
-
+    const nextCell = getNextCell();
     actualSnake.forEach((el) => {
       if (nextCell === el) {
-        // console.error("end of game");
-
-        clearInterval(mainInterval);
-        overlay.style.display = "flex";
-        snakeWrapper.classList.add("shake");
-        // console.log(nextCell, currentDirection);
+        endGame();
       }
     });
-    if (eatedFood) {
+    if (foodEaten) {
       actualSnake.push(nextCell);
       count += pointToAdd;
       if (count > bestScore) {
@@ -173,122 +154,90 @@ function moveTo(direction) {
       }
       bestScoreDiv.innerHTML = bestScore;
       printCount.innerHTML = count;
-      eatedFood = false;
+      foodEaten = false;
     } else {
       moveSnake(nextCell);
     }
     printSnake();
-    // console.timeEnd("sn");
-  }
-  return move;
+  };
 }
 
 function moveSnake(nextCell) {
-  if (nextCell.classList[1] === "food_cell") {
-    // console.log(actualSnake.length);
-    eatedFood = true;
+  if (nextCell.classList.contains('food_cell')) {
+    foodEaten = true;
     actualSnake.push(nextCell);
     actualSnake.shift();
-
-    currentFoodPosition.classList.remove("food_cell");
-
-    currentFoodPosition = getFoodposition();
+    currentFoodPosition.classList.remove('food_cell');
+    currentFoodPosition = getFoodPosition();
   } else {
     actualSnake.push(nextCell);
-    actualSnake.shift(); // removing last bite(element) of the snake
+    actualSnake.shift();
   }
 }
 
 function findPosition() {
-  matrixDOM.forEach((line, lineInd) => {
-    line.forEach((dot, dotInd) => {
-      if (dot === actualSnake[actualSnake.length - 1]) {
-        position = [lineInd, dotInd];
+  matrixDOM.forEach((row, rowIndex) => {
+    row.forEach((cell, cellIndex) => {
+      if (cell === actualSnake[actualSnake.length - 1]) {
+        position = [rowIndex, cellIndex];
       }
     });
   });
   return position;
 }
+
 function createMatrix() {
-  // console.time("create matrix");
   for (let i = 0; i < matrixSize; i++) {
-    // matrix.push([]);
     matrixDOM.push([]);
     for (let j = 0; j < matrixSize; j++) {
-      const newSnakeBite = document.createElement("div");
-      newSnakeBite.className = "snake_block_wrapper";
-      // if (i === 0 && j === 0) {
-      //   // initial snake
-      //   newSnakeBite.style.backgroundColor = "#af5";
-      // }
+      const newSnakeBite = document.createElement('div');
+      newSnakeBite.className = 'snake_block_wrapper';
       snakeWrapper.appendChild(newSnakeBite);
-      // matrix[i].push([]);
       matrixDOM[i].push(newSnakeBite);
     }
   }
-  // console.timeEnd("create matrix");
 }
 
 function chooseLevelHandler(e) {
-  // e.stopPropagation();
-
   const level = e.target.classList[0];
-
   switch (level) {
-    case "easy":
-      snakeInterval = 135;
-      pointToAdd = 4;
+    case 'easy':
+      snakeInterval = snakeIntervalPerLevel.easy;
+      pointToAdd = pointsPerLevel.easy;
       break;
-    case "medium":
-      snakeInterval = 95;
-      pointToAdd = 6;
+    case 'medium':
+      snakeInterval = snakeIntervalPerLevel.medium;
+      pointToAdd = pointsPerLevel.medium;
       break;
-    case "hard":
-      snakeInterval = 60;
-      pointToAdd = 8;
+    case 'hard':
+      snakeInterval = snakeIntervalPerLevel.hard;
+      pointToAdd = pointsPerLevel.hard;
       break;
     default:
       break;
   }
-  startMenu.style.display = "none";
+  startMenu.style.display = 'none';
   startGame();
 }
 
 function onKeyPress(e) {
-  e.stopPropagation();
   const key = e.key || e.target.classList[0];
   switch (key) {
-    case "ArrowDown":
-      if (currentDirection === "up") return; // return if we press move down while mooving up
-      currentMove = moveTo("down");
+    case 'ArrowDown':
+    case 'button_down':
+      if (currentDirection !== 'up') currentMove = moveTo('down');
       break;
-    case "button_down":
-      if (currentDirection === "up") return; // return if we press move down while mooving up
-      currentMove = moveTo("down");
+    case 'ArrowRight':
+    case 'button_right':
+      if (currentDirection !== 'left') currentMove = moveTo('right');
       break;
-    case "ArrowRight":
-      if (currentDirection === "left") return; // return if we press move to right while mooving left
-      currentMove = moveTo("right");
+    case 'ArrowLeft':
+    case 'button_left':
+      if (currentDirection !== 'right') currentMove = moveTo('left');
       break;
-    case "button_right":
-      if (currentDirection === "left") return; // return if we press move to right while mooving left
-      currentMove = moveTo("right");
-      break;
-    case "ArrowLeft":
-      if (currentDirection === "right") return; // return if we press move right while mooving left
-      currentMove = moveTo("left");
-      break;
-    case "button_left":
-      if (currentDirection === "right") return; // return if we press move right while mooving left
-      currentMove = moveTo("left");
-      break;
-    case "ArrowUp":
-      if (currentDirection === "down") return; // return if we press move up while mooving down
-      currentMove = moveTo("up");
-      break;
-    case "button_up":
-      if (currentDirection === "down") return; // return if we press move up while mooving down
-      currentMove = moveTo("up");
+    case 'ArrowUp':
+    case 'button_up':
+      if (currentDirection !== 'down') currentMove = moveTo('up');
       break;
     default:
       return;
@@ -297,14 +246,22 @@ function onKeyPress(e) {
 
 function startAgain() {
   actualSnake = [matrixDOM[1][5], matrixDOM[2][5], matrixDOM[3][5]];
-  // console.log(initialSnake);
   clear();
   printSnake();
-  overlay.style.display = "none";
-  snakeWrapper.classList.remove("shake");
-  currentDirection = "down";
-  currentMove = moveTo("down");
-  startMenu.style.display = "block";
+  overlay.style.display = 'none';
+  snakeWrapper.classList.remove('shake');
+  currentDirection = 'down';
+  currentMove = moveTo('down');
+  startMenu.style.display = 'block';
   count = 0;
   printCount.innerHTML = count;
+}
+
+function adjustWrapperWidth() {
+  const windowWidth = window.innerWidth;
+  if (windowWidth <= 992) {
+    snakeWrapper.style.width = matrixSize * 14 + 8 + 'px';
+  } else {
+    snakeWrapper.style.width = matrixSize * 28 + 8 + 'px';
+  }
 }
